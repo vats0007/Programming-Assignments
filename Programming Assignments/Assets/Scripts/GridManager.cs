@@ -7,6 +7,7 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     //vars to make a grid
+    public GameObject parent;
     public GameObject cube;
     public int rows;
     public int cols;
@@ -14,6 +15,6 @@ public class GridManager : MonoBehaviour
     private void Start()
     {
         //creating grid as object using Grid class
-        Grid grid = new Grid(rows, cols, cubeSize, cube);
+        Grid<int> grid = new Grid<int>(rows, cols, cubeSize, cube, parent);
     }
 }
