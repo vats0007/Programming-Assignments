@@ -12,7 +12,7 @@ public class Grid<TGridObject> : MonoBehaviour
     private TGridObject[,] gridArray;//2D grid int array
 
     //Grid constructor for the class
-    public Grid(int rows, int cols, float cubeSize, GameObject cube, GameObject parent/*, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject*/)//class named Grid
+    public Grid(int rows, int cols, float cubeSize, GameObject cube, GameObject parent, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject)//class named Grid
     {
         //setting values to vars
         this.rows = rows;
@@ -38,7 +38,7 @@ public class Grid<TGridObject> : MonoBehaviour
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)//cycle through cols
             {
-                //gridArray[x, y] = createGridObject();
+                gridArray[x, y] = createGridObject(this,x,y);
             }
         }
     }
@@ -47,5 +47,41 @@ public class Grid<TGridObject> : MonoBehaviour
     private Vector3 GetWorldPosition(int x,int y)
     {
         return new Vector3(x, 0, y) * tileSize;
+    }
+
+
+    //Getters
+    public void GetXY(Vector3 worldPos, out int x, out int y)
+    {
+        x = Mathf.FloorToInt(worldPos.x / tileSize);
+        y = Mathf.FloorToInt(worldPos.z / tileSize);
+    }
+
+    public TGridObject GetGridObject(int x,int y)
+    {
+        if(x>=0 && y>=0 && x<rows && y < cols)
+        {
+            return gridArray[x, y];
+        }
+        else
+        {
+            return default(TGridObject);
+        }
+    }
+
+    public TGridObject GetGridObject(Vector3 worldPos)
+    {
+        int x, y;
+        GetXY(worldPos, out x, out y);
+        return GetGridObject(x, y);
+    }
+
+    public int GetWidth()
+    {
+        return rows;
+    }
+    public int GetHeight()
+    {
+        return cols;
     }
 }

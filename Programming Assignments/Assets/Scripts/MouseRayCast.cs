@@ -5,6 +5,7 @@ using System;
 
 public class MouseRayCast : MonoBehaviour
 {
+    //private PathFinding pathFinding;
     //Tag String
     private const string SELECTABLE_TAG = "Tile";
     //Tracking of currentHitObject
@@ -14,7 +15,8 @@ public class MouseRayCast : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //pathFinding = new PathFinding(10, 10, cube.gameObject, parent.gameObject);
+
     }
 
     // Update is called once per frame
@@ -30,7 +32,6 @@ public class MouseRayCast : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         //hit stors the info about raycast
         RaycastHit hit;
-
 
         //setting to default if ray is not hitting
         if (currentHitObject != null)
@@ -66,9 +67,14 @@ public class MouseRayCast : MonoBehaviour
                     selectedTile.GetCubeInfoUI().ShowCubeInfoUI();
                     //set current object to this object
                     currentHitObject = hit.transform;
+
+                    
+
+
                 }
             }
 
         }
     }
+
 }
