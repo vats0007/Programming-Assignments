@@ -24,6 +24,13 @@ public class PathNode
         this.y = y;
         isWalkable = true;
     }
+    public PathNode(Grid<PathNode> grid, int x, int y,bool isWalkable)
+    {
+        this.grid = grid;
+        this.x = x;
+        this.y = y;
+        this.isWalkable = isWalkable;
+    }
 
     public void CalculateFCost()
     {

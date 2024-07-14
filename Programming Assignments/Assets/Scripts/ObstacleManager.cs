@@ -69,4 +69,10 @@ public class ObstacleManager : MonoBehaviour
             }
         }
     }
+
+    public PathNode VectorToPathNode(Vector3 vector,Grid<PathNode> grid)
+    {
+        PathNode pathnode = new PathNode(grid, ((int)vector.x), ((int)vector.z), false);
+        return pathnode;
+    }
 }

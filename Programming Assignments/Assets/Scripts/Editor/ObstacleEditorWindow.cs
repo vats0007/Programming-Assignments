@@ -15,6 +15,11 @@ public class ObstacleEditorWindow : EditorWindow
         GetWindow<ObstacleEditorWindow>("Obstacle Editor Window");
     }
 
+    private void Awake()
+    {
+        obstacleInfoSO = FindAnyObjectByType<ObstacleInfoSO>();
+    }
+
     private void OnEnable()
     {
         int instanceID = EditorPrefs.GetInt(PREFS_OBS_SO_INFO, 0);
@@ -31,6 +36,8 @@ public class ObstacleEditorWindow : EditorWindow
             EditorPrefs.SetInt(PREFS_OBS_SO_INFO, obstacleInfoSO.GetInstanceID());
         }
     }
+
+    
 
     private void OnGUI()
     {

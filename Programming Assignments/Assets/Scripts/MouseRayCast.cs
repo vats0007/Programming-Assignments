@@ -11,6 +11,10 @@ public class MouseRayCast : MonoBehaviour
     //Tracking of currentHitObject
     [SerializeField]
     private Transform currentHitObject;
+    private Tile selectedTile;
+
+    private int selectedX = -1;
+    private int selectedY = -1;
 
     // Start is called before the first frame update
     void Start()
@@ -50,7 +54,7 @@ public class MouseRayCast : MonoBehaviour
         {
             //ray casting for debug
             Debug.DrawRay(transform.position, mousePos - transform.position * hit.distance, Color.red);
-            Debug.Log(hit.transform.name);
+            
 
             //selectedObject is object that is hit by ray
             var selectedObject = hit.transform;
@@ -68,13 +72,22 @@ public class MouseRayCast : MonoBehaviour
                     //set current object to this object
                     currentHitObject = hit.transform;
 
-                    
-
-
+                    selectedX = (int)selectedTile.GetCubeXPos();
+                    selectedY = (int)selectedTile.GetCubeYPos();
                 }
             }
 
         }
+    }
+
+    public int GetSelectedX()
+    {
+        return selectedX;
+    }
+
+    public int GetSelectedY()
+    {
+        return selectedY;
     }
 
 }

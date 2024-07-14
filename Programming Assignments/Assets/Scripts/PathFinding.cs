@@ -19,7 +19,7 @@ public class PathFinding
 
     }
 
-    public List<PathNode> FindPath(int startX,int startY, int endX,int endY)
+    public List<PathNode> FindPath(int startX,int startY, int endX,int endY,List<PathNode> obstacleNodes)
     {
         PathNode startNode =  grid.GetGridObject(startX, startY);
         PathNode endNode = grid.GetGridObject(endX, endY);
@@ -61,12 +61,7 @@ public class PathFinding
             foreach(PathNode neighbourNode in GetNeighboursList(currentNode))
             {
                 if (closeList.Contains(neighbourNode)) continue;
-                //Testing Nonwalkables
-                //PathNode nonWalkable = grid.GetGridObject(3, 3);
-                //if (nonWalkable.isWalkable)
-                //{
-                //    nonWalkable.isWalkable = false;
-                //}
+                
                 if (!neighbourNode.isWalkable)
                 {
                     closeList.Add(neighbourNode);
@@ -194,4 +189,10 @@ public class PathFinding
     {
         return grid;
     }
+
+    //public List<Vector3> FindPath(Vector3 startPos,Vector3 endPos)
+    //{
+    //    grid.GetXY(startPos, out int startX, out int startY);
+    //    grid.GetXY(startPos, out int endX, out int endY);
+    //}
 }
