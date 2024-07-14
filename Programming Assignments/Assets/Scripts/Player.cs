@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private PathFinding pathFinding = null;
+    public PathFinding pathFinding = null;
     [SerializeField] private ObstacleInfoSO obstacleInfoSO;
     [SerializeField] private GridManager gridManager;
     [SerializeField] private ObstacleManager obstacleManager;
@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
         
     }
 
-    void pathCalculations()
+    public void pathCalculations()
     {
             pathVector.Clear();
             obstacleNodes.Clear();
@@ -163,7 +163,7 @@ public class Player : MonoBehaviour
 
     }
 
-    void MoveOnPath()
+    public void MoveOnPath()
     {
         if(currentPathIndex < pathVector.Count)
         {

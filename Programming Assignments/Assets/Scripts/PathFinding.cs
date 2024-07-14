@@ -141,7 +141,7 @@ public class PathFinding
         return neighboursList;
     }
 
-    private PathNode GetNode(int x,int y)
+    public PathNode GetNode(int x,int y)
     {
         return grid.GetGridObject(x, y);
     }
