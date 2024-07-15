@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//UI LookAtCamera script can be used with all UI with worldPosition type
 public class LookAtCamera : MonoBehaviour
 {
     //Looking towards cam Modes

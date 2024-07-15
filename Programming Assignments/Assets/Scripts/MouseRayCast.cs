@@ -9,19 +9,12 @@ public class MouseRayCast : MonoBehaviour
     //Tag String
     private const string SELECTABLE_TAG = "Tile";
     //Tracking of currentHitObject
-    [SerializeField]
-    private Transform currentHitObject;
-    private Tile selectedTile;
+    [SerializeField] private Transform currentHitObject;
+    private Tile selectedTile;//not important
 
+    //if not selection is there(initially not selected)
     private int selectedX = -1;
     private int selectedY = -1;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //pathFinding = new PathFinding(10, 10, cube.gameObject, parent.gameObject);
-
-    }
 
     // Update is called once per frame
     void Update()
@@ -41,10 +34,23 @@ public class MouseRayCast : MonoBehaviour
         if (currentHitObject != null)
         {
             //material color set to black and Ui is hidden if ray is not hitting current object
-            var selectedObject = currentHitObject.transform;
-            Tile selectedTile = selectedObject.GetComponent<Tile>();
-            selectedTile.GetComponent<Renderer>().material.color = Color.black;
-            selectedTile.GetCubeInfoUI().HideCubeInfoUI();
+            var selectedObject = currentHitObject.transform;//storing currentHitObject Transform
+            Tile selectedTile = selectedObject.GetComponent<Tile>();//Getting Info from current selected Tile
+            if (selectedTile != null)//if there is no tile
+            {
+                // setting the material color to black once it is visited
+                Renderer tileRenderer = selectedTile.GetComponent<Renderer>();//temp renderer 
+                if (tileRenderer != null)
+                {
+                    tileRenderer.material.color = Color.black;
+                }
+                // hiding the UI element of the object
+                var cubeInfoUI = selectedTile.GetCubeInfoUI();
+                if (cubeInfoUI != null)
+                {
+                    cubeInfoUI.HideCubeInfoUI();
+                }
+            }
             //setting last object selected to null
             currentHitObject = null;
         }
@@ -54,8 +60,6 @@ public class MouseRayCast : MonoBehaviour
         {
             //ray casting for debug
             Debug.DrawRay(transform.position, mousePos - transform.position * hit.distance, Color.red);
-            
-
             //selectedObject is object that is hit by ray
             var selectedObject = hit.transform;
             //checks if the hit has tag "Tile"
@@ -71,7 +75,7 @@ public class MouseRayCast : MonoBehaviour
                     selectedTile.GetCubeInfoUI().ShowCubeInfoUI();
                     //set current object to this object
                     currentHitObject = hit.transform;
-
+                    //setting selected positions
                     selectedX = (int)selectedTile.GetCubeXPos();
                     selectedY = (int)selectedTile.GetCubeYPos();
                 }
@@ -80,6 +84,7 @@ public class MouseRayCast : MonoBehaviour
         }
     }
 
+    //getters for selected positions
     public int GetSelectedX()
     {
         return selectedX;

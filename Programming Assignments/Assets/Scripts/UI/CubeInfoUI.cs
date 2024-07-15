@@ -8,10 +8,8 @@ using TMPro;
 public class CubeInfoUI : MonoBehaviour
 {
     //Reference for Text and Tile
-    [SerializeField]
-    private TextMeshProUGUI posText;
-    [SerializeField]
-    private Tile cube;
+    [SerializeField] private TextMeshProUGUI posText;
+    [SerializeField] private Tile cube;
 
     private void Start()
     {
@@ -19,10 +17,6 @@ public class CubeInfoUI : MonoBehaviour
         posText.text = "X : " + cube.GetCubeXPos() + "\n,Y : " + cube.GetCubeYPos();
         //Initial hiding of UI
         HideCubeInfoUI();
-    }
-    private void Update()
-    {
-
     }
     //Activate UI
     public void ShowCubeInfoUI()

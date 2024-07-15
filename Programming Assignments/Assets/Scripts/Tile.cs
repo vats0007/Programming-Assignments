@@ -6,19 +6,15 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     //vars for tileInfo/cubeInfo
-    [SerializeField]
-    private float x,y;//position
-    [SerializeField]
-    private CubeInfoUI cubeInfoUI;
+    [SerializeField] private float x, y;//position
+    [SerializeField] private CubeInfoUI cubeInfoUI;
 
     private void Start()
     {
         //assigning x and y pos at start
         x = transform.position.x;
         y = transform.position.z;
-        Debug.Log(new Vector3(x, 0, y));
     }
-
     //defining a function that returns the pos for the UI element
     public Vector2 GetCubePos()
     {

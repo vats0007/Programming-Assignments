@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    //All the info that Enemy needed or can Have
     private PathFinding pathFinding = null;
     [SerializeField] private ObstacleInfoSO obstacleInfoSO;
     [SerializeField] private GridManager gridManager;
@@ -16,7 +17,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private List<PathNode> obstacleNodes;
     [SerializeField] private List<Vector3> obstacleVector;
     public EnemyAI enemyAI;
-
     private Vector3 targetPosition;
     [SerializeField]
     private bool isMoving = false;
@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        //setting all the things that is needed
         transform.position = new Vector3(9, 1, 9);
         startX = 9; 
         startY = 9; 
@@ -37,26 +37,28 @@ public class EnemyController : MonoBehaviour
         obstacleVector = new List<Vector3>();
         pathFinding = new PathFinding(gridManager.rows, gridManager.cols, gridManager.cubeSize, gridManager.cube, gridManager.parent);
         enemyAI = new EnemyAI(pathFinding);
-        
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        //finding player for playerPos
         Vector3 playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
         int playerGridX =(int)playerPosition.x;
         int playerGridY = (int)playerPosition.z;
+        //setting PlayerNode based On position and using Grid from pathFinding
         playerNode = new PathNode(pathFinding.GetGrid(), playerGridX, playerGridY);
 
+        //moveTowardsFunction call from enemyAI
         enemyAI.MoveTowardsPlayer(playerNode, out endX, out endY);
 
+        //If A pressed then start calulations
         if (Input.GetKeyDown(KeyCode.A))
         {
             EnemyMovementCalculation();
         }
         
-
+        //start movements
         if (isMoving)
         {
             MoveOnPath();
@@ -72,7 +74,7 @@ public class EnemyController : MonoBehaviour
     {
 
         //if (Input.GetKeyDown(KeyCode.A))
-        
+        //pathfinding code
             path = pathFinding.FindPath(startX, startY, endX, endY, obstacleNodes);
             if (path != null && path.Count > 0)
             {
@@ -91,7 +93,7 @@ public class EnemyController : MonoBehaviour
 
     void EnemyPathCalculation()
     {
-
+        //calulations same as player
         pathVector.Clear();
         obstacleNodes.Clear();
         obstacleVector.Clear();
@@ -143,6 +145,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    //same as player MoveOnPath
     public void MoveOnPath()
     {
         if (currentPathIndex < pathVector.Count)

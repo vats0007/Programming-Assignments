@@ -13,6 +13,7 @@ public class EnemyAI : IAI
     public int startX;
     public int startY;
 
+    //enemyAI constructor
     public EnemyAI(PathFinding pathFinding)
     {
         this.pathFinding = pathFinding;
@@ -22,37 +23,40 @@ public class EnemyAI : IAI
 
     public void MoveTowardsPlayer(PathNode playerPosition, out int endX,out int endY)
     {
-
+        //Initial Position for enemy
         startX = pathFinding.GetGrid().GetGridObject(9, 9).x;
         startY = pathFinding.GetGrid().GetGridObject(9, 9).y;
-        
 
-
-
+        //getting up/down/left/right nodes
         List<PathNode> adjacentNodes = GetNeighboursListOfPlayer(playerPosition);
+        //finding closest node for enemy to travel
         PathNode closestNode = GetClosestNode(startX, startY, adjacentNodes);
 
+        //if there is closest node
         if (closestNode != null)
         {
+            //setting ends as that node
             endX = closestNode.x;
             endY = closestNode.y;
         }
         else
         {
+            //staying at the starting position(returning)
             endX = startX;
             endY = startY;
         }
-
+        //default set
         this.endX = endX;
         this.endY = endY;
 
     }
 
-
+    //same code as player finding neighbours
     private List<PathNode> GetNeighboursListOfPlayer(PathNode currentNode)
     {
         List<PathNode> neighboursList = new List<PathNode>();
 
+        //only giving up/down/left/right nods
         if (currentNode.x - 1 >= 0)
         {
             //left Node
@@ -84,7 +88,7 @@ public class EnemyAI : IAI
         if (nodes.Count == 0)
             return null;
 
-        PathNode closestNode = nodes[0];
+        PathNode closestNode = nodes[0];//setting one node as closest
         float closestDistance = Vector3.Distance(new Vector3(startX, 1, startY), new Vector3(closestNode.x, 1, closestNode.y));
         foreach (PathNode node in nodes)
         {
@@ -95,7 +99,7 @@ public class EnemyAI : IAI
                 closestDistance = distance;
             }
         }
-
+        //returning closest node
         return closestNode;
     }
 

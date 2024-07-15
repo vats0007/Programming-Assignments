@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    //All the info that Player needed or can Have
     public PathFinding pathFinding = null;
     [SerializeField] private ObstacleInfoSO obstacleInfoSO;
     [SerializeField] private GridManager gridManager;
@@ -20,15 +21,11 @@ public class Player : MonoBehaviour
     private bool isMoving = false;
     private float moveSpeed = 5f;
     private int currentPathIndex = 0;
-    private void Awake()
-    {
-        
-    }
-    
 
     // Start is called before the first frame update
     void Start()
     {
+        //setting all the things that is needed
         transform.position = new Vector3(0, 1, 0);
         gridManager = FindAnyObjectByType<GridManager>();
         obstacleManager = FindAnyObjectByType<ObstacleManager>();
@@ -60,6 +57,7 @@ public class Player : MonoBehaviour
             obstacleNodes.Clear();
             obstacleVector.Clear();
 
+            //setting obstacle nodes to avoid them from pathfinding
             if (obstacleNodes.Count == 0)
             {
                 for (int y = 0; y < 10; y++)
@@ -89,7 +87,7 @@ public class Player : MonoBehaviour
                 }
             }
             
-            
+            //setting a pathVector on which player can travel
             if (path != null)
             {
                 for (int i = 0; i < path.Count; i++)
@@ -110,9 +108,9 @@ public class Player : MonoBehaviour
     void playerMovementCalc()
     {
         if (isMoving) return;
+        //calulates which cube from grid is selected and using S we can set start position
         if (Input.GetKeyDown(KeyCode.S))
         {
-            Debug.Log("pressed");
             if (mouseRayCast.GetSelectedX() != -1)
             {
                 startX = mouseRayCast.GetSelectedX();
@@ -123,9 +121,9 @@ public class Player : MonoBehaviour
             }
             Debug.Log(endX + " " + endY);
         }
+        //using mouse click we can set end pos and also starts pathcalculations
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("pressed");
             if(mouseRayCast.GetSelectedX()!= -1)
             {
                 endX = mouseRayCast.GetSelectedX();
@@ -134,12 +132,11 @@ public class Player : MonoBehaviour
             {
                 endY = mouseRayCast.GetSelectedY();
             }
-            Debug.Log(endX + " " + endY);
+            //pathfindings
             path = pathFinding.FindPath(startX, startY, endX, endY, obstacleNodes);
 
             if (path != null && path.Count > 0)
             {
-                Debug.Log("pressed");
                 pathCalculations();
                 currentPathIndex = 0;
                 targetPosition = pathVector[currentPathIndex];
@@ -152,22 +149,22 @@ public class Player : MonoBehaviour
 
         if (path != null && path.Count > 0 && Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("pressed");
-            pathCalculations();
-            currentPathIndex = 0;
-            targetPosition = pathVector[currentPathIndex];
-            isMoving = true;
+            pathCalculations();//pathCalcs
+            currentPathIndex = 0;//currentPathIndex set to 0
+            targetPosition = pathVector[currentPathIndex];//target is set to the currentPathIndex
+            isMoving = true;//is moving set to true
         }
-
-
-
     }
 
+    //moving Logic
     public void MoveOnPath()
     {
+        //if there is a vector on which player can go
         if(currentPathIndex < pathVector.Count)
         {
+            //target dir calc
             Vector3 direction = (targetPosition - transform.position).normalized;
+            //this variable calculates the distance the object should move in the current frame.
             float distanceAtThisFrame = moveSpeed * Time.deltaTime;
             if (Vector3.Distance(transform.position, targetPosition) <= distanceAtThisFrame)
             {
@@ -175,16 +172,16 @@ public class Player : MonoBehaviour
                 currentPathIndex++;
                 if (currentPathIndex < pathVector.Count)
                 {
-                    targetPosition = pathVector[currentPathIndex];
+                    targetPosition = pathVector[currentPathIndex];//change target position to next index if once reached
                 }
                 else
                 {
-                    isMoving = false;
+                    isMoving = false;//set is moving to false if distance is achieved
                 }
             }
             else
             {
-                transform.position += direction * distanceAtThisFrame;
+                transform.position += direction * distanceAtThisFrame;//move towards target postion
             }
         }
         

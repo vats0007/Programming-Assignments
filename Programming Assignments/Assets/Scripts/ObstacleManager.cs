@@ -29,17 +29,18 @@ public class ObstacleManager : MonoBehaviour
 
     private void GenerateObstacles()
     {
-        DestroyExistingObstacles();
+        DestroyExistingObstacles();//destroyExisting so duplications can not be occur
         for (int y = 0; y < 10; y++)
         {
             for (int x = 0; x < 10; x++)
             {
-                if (obstacleInfoSO.obstacleGrid[x, y])
+                if (obstacleInfoSO.obstacleGrid[x, y])//if there is a SO with Info
                 {
                     //Debug.Log(obstacleInfoSO.obstacleGrid[x, y]);
                     if (obstacles[x, y] == null)
                     {
-                        Vector3 obsPos = new Vector3(x, 1, y);
+                        Vector3 obsPos = new Vector3(x, 1, y);//setting vecs
+                        //instantiating obs
                         obstacles[x, y] = Instantiate(obstaclePrefab, obsPos, Quaternion.identity,parent.transform);
                     }
                 }
@@ -55,6 +56,7 @@ public class ObstacleManager : MonoBehaviour
         }
     }
 
+    //destroy if there is anything on that position
     private void DestroyExistingObstacles()
     {
         for (int y = 0; y < 10; y++)
@@ -70,6 +72,7 @@ public class ObstacleManager : MonoBehaviour
         }
     }
 
+    //VectorToPathNode Getter
     public PathNode VectorToPathNode(Vector3 vector,Grid<PathNode> grid)
     {
         PathNode pathnode = new PathNode(grid, ((int)vector.x), ((int)vector.z), false);
