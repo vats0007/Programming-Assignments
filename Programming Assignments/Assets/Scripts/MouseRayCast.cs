@@ -42,14 +42,14 @@ public class MouseRayCast : MonoBehaviour
                 Renderer tileRenderer = selectedTile.GetComponent<Renderer>();//temp renderer 
                 if (tileRenderer != null)
                 {
-                    tileRenderer.material.color = Color.black;
+                    //tileRenderer.material.color = Color.black;
                 }
                 // hiding the UI element of the object
-                var cubeInfoUI = selectedTile.GetCubeInfoUI();
-                if (cubeInfoUI != null)
-                {
-                    cubeInfoUI.HideCubeInfoUI();
-                }
+                //var cubeInfoUI = selectedTile.GetCubeInfoUI();
+                //if (cubeInfoUI != null)
+                //{
+                //    cubeInfoUI.HideCubeInfoUI();
+                //}
             }
             //setting last object selected to null
             currentHitObject = null;
@@ -71,8 +71,8 @@ public class MouseRayCast : MonoBehaviour
                 if (selectedTile != null)
                 {
                     //set diff material and show UI element
-                    selectedTile.GetComponent<Renderer>().material.color = Color.red;
-                    selectedTile.GetCubeInfoUI().ShowCubeInfoUI();
+                    //selectedTile.GetComponent<Renderer>().material.color = Color.red;
+                    //selectedTile.GetCubeInfoUI().ShowCubeInfoUI();
                     //set current object to this object
                     currentHitObject = hit.transform;
                     //setting selected positions

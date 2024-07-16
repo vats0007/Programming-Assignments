@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using OpenCover.Framework.Model;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 public class PathNode

@@ -1,41 +1,82 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    //All the info that Player needed or can Have
+    private const string LEVEL_2 = "Level 2";
     public PathFinding pathFinding = null;
-    [SerializeField] private ObstacleInfoSO obstacleInfoSO;
+    //[SerializeField] private ObstacleInfoSO obstacleInfoSO;
     [SerializeField] private GridManager gridManager;
-    [SerializeField] private ObstacleManager obstacleManager;
+    //[SerializeField] private ObstacleManager obstacleManager;
     [SerializeField] private int endX, endY;
     [SerializeField] private int startX, startY;
-    [SerializeField]private List<Vector3> pathVector;
+    [SerializeField] private List<Vector3> pathVector;
     private List<PathNode> path;
-    [SerializeField]private List<PathNode> obstacleNodes;
+    [SerializeField] private List<PathNode> obstacleNodes;
     [SerializeField] private List<Vector3> obstacleVector;
     [SerializeField] private MouseRayCast mouseRayCast;
+    private GameManager gameManager;
 
     private Vector3 targetPosition;
     private bool isMoving = false;
     private float moveSpeed = 5f;
     private int currentPathIndex = 0;
 
-    // Start is called before the first frame update
     void Start()
     {
-        //setting all the things that is needed
         transform.position = new Vector3(0, 1, 0);
         gridManager = FindAnyObjectByType<GridManager>();
-        obstacleManager = FindAnyObjectByType<ObstacleManager>();
+        //obstacleManager = FindAnyObjectByType<ObstacleManager>();
+        gameManager = FindAnyObjectByType<GameManager>();
         pathVector = new List<Vector3>();
         obstacleNodes = new List<PathNode>();
         obstacleVector = new List<Vector3>();
         pathFinding = new PathFinding(gridManager.rows, gridManager.cols, gridManager.cubeSize, gridManager.cube, gridManager.parent);
+        if(SceneManager.GetActiveScene().name == LEVEL_2)
+        {
+            SetUpObstacles(1, 1);
+            SetUpObstacles(2, 2);
+            SetUpObstacles(3, 3);
+            SetUpObstacles(4, 4);
+            SetUpObstacles(5, 5);
+            SetUpObstacles(6, 6);
+            SetUpObstacles(7, 7);
+            SetUpObstacles(8, 8);
+            SetUpObstacles(9, 9);
+            SetUpObstacles(1, 2);
+            SetUpObstacles(1, 3);
+            SetUpObstacles(1, 4);
+            SetUpObstacles(2, 1);
+            SetUpObstacles(3, 1);
+            SetUpObstacles(4, 1);
+            SetUpObstacles(3, 4);
+            SetUpObstacles(3, 5);
+            SetUpObstacles(5, 3);
+            SetUpObstacles(5, 3);
+        }
     }
 
-    // Update is called once per frame
+    void SetUpObstacles(int a, int b)
+    {
+        //for (int y = 0; y < gridManager.rows; y++)
+        //{
+        //    for (int x = 0; x < gridManager.cols; x++)
+        //    {
+        //        if (obstacleInfoSO.obstacleGrid[x, y])
+        //        {
+        //            PathNode obstacleNode = pathFinding.GetGrid().GetGridObject(a, b);
+        //            if (obstacleNode.isWalkable)
+        //            {
+        //                obstacleNode.isWalkable = false;
+        //            }
+        //            obstacleVector.Add(new Vector3(a, 1, b));
+        //        }
+        //    }
+        //}
+    }
+
     void Update()
     {
         playerMovementCalc();
@@ -48,91 +89,71 @@ public class Player : MonoBehaviour
                 startY = endY;
             }
         }
-        
     }
 
     public void pathCalculations()
     {
-            pathVector.Clear();
-            obstacleNodes.Clear();
-            obstacleVector.Clear();
+        pathVector.Clear();
+        obstacleNodes.Clear();
+        obstacleVector.Clear();
 
-            //setting obstacle nodes to avoid them from pathfinding
-            if (obstacleNodes.Count == 0)
+        //for (int y = 0; y < gridManager.rows; y++)
+        //{
+        //    for (int x = 0; x < gridManager.cols; x++)
+        //    {
+        //        if (obstacleInfoSO.obstacleGrid[x, y])
+        //        {
+        //            Vector3 obstaclePosition = new Vector3(x, 1, y);
+        //            PathNode obstacleNode = pathFinding.GetGrid().GetGridObject(x, y);
+        //            if (obstacleNode.isWalkable)
+        //            {
+        //                obstacleNode.isWalkable = false;
+        //            }
+        //            obstacleVector.Add(new Vector3(x, 1, y));
+        //        }
+        //        else
+        //        {
+        //            PathNode obstacleNode = pathFinding.GetGrid().GetGridObject(x, y);
+        //            if (!obstacleNode.isWalkable)
+        //            {
+        //                obstacleNode.isWalkable = true;
+        //            }
+        //            obstacleVector.Remove(new Vector3(x, 1, y));
+        //        }
+        //    }
+        //}
+
+        if (path != null)
+        {
+            for (int i = 0; i < path.Count; i++)
             {
-                for (int y = 0; y < 10; y++)
+                Vector3 newVector = new Vector3(path[i].x, 1, path[i].y);
+                if (!pathVector.Contains(newVector))
                 {
-                    for (int x = 0; x < 10; x++)
-                    {
-                        if (obstacleInfoSO.obstacleGrid[x, y])
-                        {
-                            Vector3 obstaclePosition = new Vector3(x, 1, y);
-                            PathNode obstacleNode = pathFinding.GetGrid().GetGridObject(x, y);
-                            if (obstacleNode.isWalkable)
-                            {
-                                obstacleNode.isWalkable = false;
-                            }
-                            obstacleVector.Add(new Vector3(x, 1, y));
-                        }
-                        else
-                        {
-                            PathNode obstacleNode = pathFinding.GetGrid().GetGridObject(x, y);
-                            if (!obstacleNode.isWalkable)
-                            {
-                                obstacleNode.isWalkable = true;
-                            }
-                            obstacleVector.Remove(new Vector3(x, 1, y));
-                        }
-                    }
+                    pathVector.Add(newVector);
                 }
             }
-            
-            //setting a pathVector on which player can travel
-            if (path != null)
+            foreach (PathNode node in path)
             {
-                for (int i = 0; i < path.Count; i++)
-                {
-                    Vector3 newVector = new Vector3(path[i].x, 1, path[i].y);
-                    if (!pathVector.Contains(newVector))
-                    {
-                        pathVector.Add(newVector);
-                    }
-                }
-                foreach (PathNode node in path)
-                {
-                    Debug.Log(node);
-                }
+                Debug.Log(node);
             }
+        }
     }
 
     void playerMovementCalc()
     {
         if (isMoving) return;
-        //calulates which cube from grid is selected and using S we can set start position
-        if (Input.GetKeyDown(KeyCode.S))
+
+        if (mouseRayCast.GetSelectedX() != -1)
         {
-            if (mouseRayCast.GetSelectedX() != -1)
-            {
-                startX = mouseRayCast.GetSelectedX();
-            }
-            if (mouseRayCast.GetSelectedY() != -1)
-            {
-                startY = mouseRayCast.GetSelectedY();
-            }
-            Debug.Log(endX + " " + endY);
+            endX = mouseRayCast.GetSelectedX();
         }
-        //using mouse click we can set end pos and also starts pathcalculations
+        if (mouseRayCast.GetSelectedY() != -1)
+        {
+            endY = mouseRayCast.GetSelectedY();
+        }
         if (Input.GetMouseButtonDown(0))
         {
-            if(mouseRayCast.GetSelectedX()!= -1)
-            {
-                endX = mouseRayCast.GetSelectedX();
-            }
-            if (mouseRayCast.GetSelectedY() != -1)
-            {
-                endY = mouseRayCast.GetSelectedY();
-            }
-            //pathfindings
             path = pathFinding.FindPath(startX, startY, endX, endY, obstacleNodes);
 
             if (path != null && path.Count > 0)
@@ -144,27 +165,22 @@ public class Player : MonoBehaviour
             }
         }
 
-        //After adding obstacles press space once
         path = pathFinding.FindPath(startX, startY, endX, endY, obstacleNodes);
 
         if (path != null && path.Count > 0 && Input.GetKeyDown(KeyCode.Space))
         {
-            pathCalculations();//pathCalcs
-            currentPathIndex = 0;//currentPathIndex set to 0
-            targetPosition = pathVector[currentPathIndex];//target is set to the currentPathIndex
-            isMoving = true;//is moving set to true
+            pathCalculations();
+            currentPathIndex = 0;
+            targetPosition = pathVector[currentPathIndex];
+            isMoving = true;
         }
     }
 
-    //moving Logic
     public void MoveOnPath()
     {
-        //if there is a vector on which player can go
-        if(currentPathIndex < pathVector.Count)
+        if (currentPathIndex < pathVector.Count)
         {
-            //target dir calc
             Vector3 direction = (targetPosition - transform.position).normalized;
-            //this variable calculates the distance the object should move in the current frame.
             float distanceAtThisFrame = moveSpeed * Time.deltaTime;
             if (Vector3.Distance(transform.position, targetPosition) <= distanceAtThisFrame)
             {
@@ -172,18 +188,33 @@ public class Player : MonoBehaviour
                 currentPathIndex++;
                 if (currentPathIndex < pathVector.Count)
                 {
-                    targetPosition = pathVector[currentPathIndex];//change target position to next index if once reached
+                    targetPosition = pathVector[currentPathIndex];
                 }
                 else
                 {
-                    isMoving = false;//set is moving to false if distance is achieved
+                    isMoving = false;
                 }
+
+                // Change the color of the cube where the player lands
+                ChangeColor(transform.position - Vector3.up, Color.red);
             }
             else
             {
-                transform.position += direction * distanceAtThisFrame;//move towards target postion
+                transform.position += direction * distanceAtThisFrame;
             }
         }
-        
+    }
+
+    void ChangeColor(Vector3 position, Color color)
+    {
+        Collider[] colliders = Physics.OverlapSphere(position, 0.3f);
+        foreach (Collider collider in colliders)
+        {
+            Renderer renderer = collider.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material.color = color;
+            }
+        }
     }
 }

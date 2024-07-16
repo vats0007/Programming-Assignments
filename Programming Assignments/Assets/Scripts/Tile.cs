@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour
 {
     //vars for tileInfo/cubeInfo
     [SerializeField] private float x, y;//position
-    [SerializeField] private CubeInfoUI cubeInfoUI;
+    //[SerializeField] private CubeInfoUI cubeInfoUI;
 
     private void Start()
     {
@@ -33,8 +33,8 @@ public class Tile : MonoBehaviour
         return y;
     }
     //function returns CubeInfoUI Component
-    public CubeInfoUI GetCubeInfoUI()
-    {
-        return cubeInfoUI;
-    }
+    //public CubeInfoUI GetCubeInfoUI()
+    //{
+    //    return cubeInfoUI;
+    //}
 }
